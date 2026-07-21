@@ -6,10 +6,10 @@ import about from "@/assets/about.jpg";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Nomad Bikers Club" },
-      { name: "description", content: "Founded in 2021, Nomad Bikers Club is India's women-only riding community — making the road an equal space for women." },
+      { title: "About - Nomad Bikers Club" },
+      { name: "description", content: "Founded in 2021, Nomad Bikers Club is India's women-only riding community - making the road an equal space for women." },
       { property: "og:title", content: "About Nomad Bikers Club" },
-      { property: "og:description", content: "For Women, By Women — making the road an equal space." },
+      { property: "og:description", content: "For Women, By Women - making the road an equal space." },
       { property: "og:image", content: about },
     ],
   }),
@@ -29,7 +29,7 @@ function About() {
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
             className="mt-4 sm:mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Since 2021, Nomad Bikers Club has been on one mission — making the road an equal space for women. We've trained 6,000+ women across 24+ cities, and we're just getting started.
+            Since 2021, Nomad Bikers Club has been on one mission - making the road an equal space for women. We've trained 6,000+ women across 24+ cities, and we're just getting started.
           </motion.p>
         </div>
       </section>
@@ -77,7 +77,7 @@ function About() {
               { y: "2021", t: "The Spark", d: "Founded by Maya who wanted a safe, judgement-free space for other women to learn." },
               { y: "2022", t: "First Batches", d: "We expanded our team with fellow women riders who share the same vision, launching all-female beginner training batches in Bangalore and Chennai." },
               { y: "2023", t: "Personal Training", d: "Opened 1-on-1 PT so women could learn at their own pace, in their own neighbourhood." },
-              { y: "2024", t: "Getaways Begin", d: "Started women-only getaways — a new destination every 3 months." },
+              { y: "2024", t: "Getaways Begin", d: "Started women-only getaways - a new destination every 3 months." },
               { y: "2025", t: "6,000+ Women", d: "Crossed six thousand women trained, and grew across 24+ Indian cities." },
             ].map((m, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
@@ -100,7 +100,7 @@ function About() {
             {[
               { icon: Shield, t: "Safe Space", d: "Women trainers, women batches, zero judgement." },
               { icon: Heart, t: "Patience", d: "Everyone learns at their own pace. We meet you there." },
-              { icon: Users, t: "Community", d: "Women who empower, support, and inspire each other—on and off the road." },
+              { icon: Users, t: "Community", d: "Women who empower, support, and inspire each other-on and off the road." },
               { icon: Compass, t: "Equality", d: "The road belongs to everyone. We're making sure women take their share." },
             ].map((v, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}

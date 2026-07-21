@@ -12,11 +12,11 @@ export function Footer() {
             <img src={logo} alt="" className="h-12 w-12 rounded-full ring-1 ring-primary/40" />
             <div>
               <div className="font-display font-bold text-lg">NOMAD BIKERS CLUB</div>
-              <div className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Estd 2021 — Ride Free</div>
+              <div className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Estd 2021 - Ride Free</div>
             </div>
           </div>
           <p className="text-sm text-muted-foreground max-w-md">
-            For Women, By Women. India's women-only riding community — making the road an equal space.
+            For Women, By Women. India's women-only riding community - making the road an equal space.
           </p>
           <div className="flex gap-3 mt-6">
             <a href="https://www.instagram.com/nomadbikersclub" target="_blank" rel="noreferrer" className="p-3 glass rounded-full hover:shadow-glow transition" aria-label="Instagram">
@@ -38,7 +38,7 @@ export function Footer() {
             <li><Link to="/booking" className="hover:text-foreground">Booking</Link></li>
             <li><Link to="/testimonials" className="hover:text-foreground">Nomad Stories</Link></li>
             <li><Link to="/careers" className="hover:text-foreground">Careers</Link></li>
-            <li><a href="https://thenomadsforge.com" target="_blank" rel="noreferrer" className="hover:text-foreground">Shop — Nomads Forge</a></li>
+            <li><a href="https://thenomadsforge.com" target="_blank" rel="noreferrer" className="hover:text-foreground">Shop - Nomads Forge</a></li>
             <li><Link to="/contact" className="hover:text-foreground">Contact</Link></li>
           </ul>
         </div>

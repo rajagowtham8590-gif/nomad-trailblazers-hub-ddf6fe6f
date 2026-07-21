@@ -7,10 +7,10 @@ import { CheckCircle2, Send } from "lucide-react";
 export const Route = createFileRoute("/booking")({
   head: () => ({
     meta: [
-      { title: "Book a Ride — Nomad Bikers Club" },
+      { title: "Book a Ride - Nomad Bikers Club" },
       { name: "description", content: "Reserve your spot for training or a guided trip with Nomad Bikers Club." },
       { property: "og:title", content: "Book your ride" },
-      { property: "og:description", content: "Quick booking — limited slots per session." },
+      { property: "og:description", content: "Quick booking - limited slots per session." },
     ],
   }),
   component: Booking,
