@@ -7,9 +7,9 @@ import { CheckCircle2, Send, Heart, Users, Compass } from "lucide-react";
 export const Route = createFileRoute("/careers")({
   head: () => ({
     meta: [
-      { title: "Careers — Nomad Bikers Club" },
+      { title: "Careers - Nomad Bikers Club" },
       { name: "description", content: "Join Nomad Bikers Club as a women trainer. Help us make the road an equal space for women across India." },
-      { property: "og:title", content: "Careers — Ride with us" },
+      { property: "og:title", content: "Careers - Ride with us" },
       { property: "og:description", content: "Become a Nomad trainer. For women, by women." },
     ],
   }),

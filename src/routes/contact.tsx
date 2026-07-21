@@ -7,7 +7,7 @@ import { z } from "zod";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Nomad Bikers Club" },
+      { title: "Contact - Nomad Bikers Club" },
       { name: "description", content: "Reach Nomad Bikers Club for bookings, partnerships or general queries." },
       { property: "og:title", content: "Contact us" },
       { property: "og:description", content: "Email, phone, and location." },
@@ -58,7 +58,7 @@ function Contact() {
               { icon: Phone, t: "Call us", v: "+91 90870 30060", href: "tel:+919087030060" },
               { icon: Mail, t: "Email", v: "support@nomadbikersclub.in", href: "mailto:support@nomadbikersclub.in" },
               { icon: Instagram, t: "Instagram", v: "@nomadbikersclub", href: "https://www.instagram.com/nomadbikersclub" },
-              { icon: MapPin, t: "Location", v: "India — see Google Business Profile", href: "https://share.google/fD21aLl2q4ggqwhe4" },
+              { icon: MapPin, t: "Location", v: "India - see Google Business Profile", href: "https://share.google/fD21aLl2q4ggqwhe4" },
             ].map((c, i) => (
               <motion.a key={i} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"
                 initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}

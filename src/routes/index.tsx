@@ -27,9 +27,9 @@ import homeGetaways from "@/assets/home-getaways.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nomad Bikers Club — For Women, By Women" },
-      { name: "description", content: "India's first women-only riding community. Bike & scooty training, personal coaching and getaways — making the road an equal space for women." },
-      { property: "og:title", content: "Nomad Bikers Club — For Women, By Women" },
+      { title: "Nomad Bikers Club - For Women, By Women" },
+      { name: "description", content: "India's first women-only riding community. Bike & scooty training, personal coaching and getaways - making the road an equal space for women." },
+      { property: "og:title", content: "Nomad Bikers Club - For Women, By Women" },
       { property: "og:description", content: "Making the road an equal space for women." },
     ],
   }),
@@ -78,7 +78,7 @@ function Home() {
         <motion.div style={{ opacity }} className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 h-full flex flex-col justify-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}
             className="inline-flex items-center gap-2 self-start px-3 sm:px-4 py-1.5 rounded-full glass text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] text-primary mb-4 sm:mb-6">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> For Women, By Women — Estd 2021
+            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> For Women, By Women - Estd 2021
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.9 }}
             className="font-display text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.95] max-w-4xl">
@@ -86,7 +86,7 @@ function Home() {
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}
             className="mt-4 sm:mt-6 max-w-xl text-base sm:text-lg text-muted-foreground">
-            From your first throttle twist to confident highway rides — Nomad Bikers Club is India's women-only training community. Trained by women, for women.
+            From your first throttle twist to confident highway rides - Nomad Bikers Club is India's women-only training community. Trained by women, for women.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.8 }}
             className="mt-8 sm:mt-10 flex flex-wrap gap-3 sm:gap-4">
@@ -147,8 +147,8 @@ function Home() {
           <SectionHeader eyebrow="What We Do" title="Crafted for every woman" desc="From the first wobble to confident highway riding." />
           <div className="mt-10 sm:mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {[
-              { icon: Gauge, t: "Regular Training Batch", d: "3-hour group sessions for women already comfortable on a scooty — refine your skills.", img: homeRegular.url },
-              { icon: Bike, t: "Beginner Training Batch", d: "Group of 5 — 20 hours over 4 days. Start from zero with confidence.", img: homeBeginner.url },
+              { icon: Gauge, t: "Regular Training Batch", d: "3-hour group sessions for women already comfortable on a scooty - refine your skills.", img: homeRegular.url },
+              { icon: Bike, t: "Beginner Training Batch", d: "Group of 5 - 20 hours over 4 days. Start from zero with confidence.", img: homeBeginner.url },
               { icon: Mountain, t: "Getaways", d: "Women-only rides to a new location every 3 months.", img: homeGetaways.url },
             ].map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
@@ -213,7 +213,7 @@ function Home() {
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               { n: "01", icon: Calendar, t: "Book your slot", d: "Confirm your slot on the service you have chosen." },
-              { n: "02", icon: Wrench, t: "Learn to Ride", d: "Hands-on practice — patient, supportive and judgement-free." },
+              { n: "02", icon: Wrench, t: "Learn to Ride", d: "Hands-on practice - patient, supportive and judgement-free." },
               { n: "03", icon: Users, t: "Journey continues", d: "Practice sessions available each month." },
               { n: "04", icon: MapPin, t: "Own the Road", d: "Ride with confidence, explore with us." },
             ].map((s, i) => (
@@ -240,7 +240,7 @@ function Home() {
               <div className="absolute inset-0 bg-gradient-to-tr from-background/60 to-transparent" />
               <div className="absolute bottom-4 sm:bottom-6 left-4 right-4 sm:left-6 sm:right-6 glass rounded-2xl p-4">
                 <div className="text-[10px] sm:text-xs uppercase tracking-widest text-primary">Next Getaway</div>
-                <div className="font-display text-xl sm:text-2xl font-bold mt-1">A new destination — every 3 months</div>
+                <div className="font-display text-xl sm:text-2xl font-bold mt-1">A new destination - every 3 months</div>
                 <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
                   <span className="glass rounded-full px-2.5 py-1">Women-only</span>
                   <span className="glass rounded-full px-2.5 py-1">All-levels</span>
@@ -282,9 +282,9 @@ function Home() {
           <SectionHeader eyebrow="Nomad Stories" title="Loved by women across India" desc="Real voices from riders who learnt with us." />
           <div className="mt-10 sm:mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {[
-              { n: "Priya S.", t: "Learnt scooty as a complete beginner — patient trainers and a truly safe space for women." },
+              { n: "Priya S.", t: "Learnt scooty as a complete beginner - patient trainers and a truly safe space for women." },
               { n: "Sneha I.", t: "From scared of the throttle to riding solo in 7 days. The personal training is unmatched." },
-              { n: "Aditi M.", t: "Found a community here. The getaways are unforgettable — women supporting women on the road." },
+              { n: "Aditi M.", t: "Found a community here. The getaways are unforgettable - women supporting women on the road." },
             ].map((r, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                 className="glass rounded-3xl p-6 sm:p-7 shadow-elevated">
@@ -312,12 +312,12 @@ function Home() {
           <SectionHeader eyebrow="FAQ" title="Common questions" desc="Everything you need before signing up." />
           <div className="mt-10 space-y-3">
             {[
-              { q: "Is this only for women?", a: "Yes — Nomad Bikers Club is a women-only training community. All our trainers and batches are exclusively for women." },
-              { q: "Do I need my own bike?", a: "No — we provide a bike for training, including fuel, bike maintenance and safety gear." },
+              { q: "Is this only for women?", a: "Yes - Nomad Bikers Club is a women-only training community. All our trainers and batches are exclusively for women." },
+              { q: "Do I need my own bike?", a: "No - we provide a bike for training, including fuel, bike maintenance and safety gear." },
               { q: "What if I've never ridden anything before?", a: "You can join our beginner group training programme or opt for Personal Training." },
-              { q: "How is Personal Training different?", a: "If you already know how to ride a scooter, you can opt for a 2-day personal training. If you're a complete beginner to scooter, you can opt for a 7-day personal training — both come with flexible dates and timings." },
+              { q: "How is Personal Training different?", a: "If you already know how to ride a scooter, you can opt for a 2-day personal training. If you're a complete beginner to scooter, you can opt for a 7-day personal training - both come with flexible dates and timings." },
               { q: "What are the Getaways?", a: "Women-only group rides to a new destination every 3 months. Routes are curated and beginner-friendly." },
-              { q: "Which cities do you operate in?", a: "Bangalore, Chennai, Pune, Mumbai, Coimbatore, Hyderabad, Trivandrum, Kochi, Mysore, Vizag, Erode and more — 24+ cities." },
+              { q: "Which cities do you operate in?", a: "Bangalore, Chennai, Pune, Mumbai, Coimbatore, Hyderabad, Trivandrum, Kochi, Mysore, Vizag, Erode and more - 24+ cities." },
             ].map((f, i) => <FaqItem key={i} q={f.q} a={f.a} i={i} />)}
           </div>
         </div>
