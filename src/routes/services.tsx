@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Bike, Gauge, Mountain, GraduationCap, ArrowRight, Clock, Users } from "lucide-react";
-import scooty from "@/assets/personal-training.png.asset.json";
-import beginnerTraining from "@/assets/beginner-training.png.asset.json";
-import regularTraining from "@/assets/regular-training.png.asset.json";
-import getawaysImg from "@/assets/getaways.png.asset.json";
+const scooty = { url: "/img/personal-training.png" };
+const beginnerTraining = { url: "/img/beginner-training.png" };
+const regularTraining = { url: "/img/regular-training.png" };
+const getawaysImg = { url: "/img/getaways.png" };
 
 export const Route = createFileRoute("/services")({
   head: () => ({

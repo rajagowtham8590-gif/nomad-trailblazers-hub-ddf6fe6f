@@ -20,9 +20,9 @@ import cityCoimbatore from "@/assets/cities/coimbatore.jpg";
 import cityHyderabad from "@/assets/cities/hyderabad.jpg";
 import cityKochi from "@/assets/cities/kochi.jpg";
 import cityMore from "@/assets/cities/more.jpg";
-import homeRegular from "@/assets/home-regular.png.asset.json";
-import homeBeginner from "@/assets/home-beginner.png.asset.json";
-import homeGetaways from "@/assets/home-getaways.png.asset.json";
+const homeRegular = { url: "/img/home-regular.png" };
+const homeBeginner = { url: "/img/home-beginner.png" };
+const homeGetaways = { url: "/img/home-getaways.png" };
 
 export const Route = createFileRoute("/")({
   head: () => ({
