@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BookingRouteImport } from './routes/booking'
@@ -31,6 +32,11 @@ const TermsRoute = TermsRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/booking': typeof BookingRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/booking': typeof BookingRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/booking': typeof BookingRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/booking'
     | '/careers'
     | '/contact'
+    | '/refund-policy'
     | '/services'
     | '/terms'
     | '/testimonials'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/booking'
     | '/careers'
     | '/contact'
+    | '/refund-policy'
     | '/services'
     | '/terms'
     | '/testimonials'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/booking'
     | '/careers'
     | '/contact'
+    | '/refund-policy'
     | '/services'
     | '/terms'
     | '/testimonials'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   BookingRoute: typeof BookingRoute
   CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookingRoute: BookingRoute,
   CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
@@ -208,13 +229,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

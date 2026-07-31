@@ -52,7 +52,12 @@ export function Footer() {
         </div>
       </div>
       <div className="relative border-t border-border py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Nomad Bikers Club. All rights reserved.
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 px-6">
+          <Link to="/terms" className="hover:text-foreground">Terms &amp; Conditions</Link>
+          <span className="opacity-40">|</span>
+          <Link to="/refund-policy" className="hover:text-foreground">Refund, Cancellation &amp; Rescheduling Policy</Link>
+        </div>
+        <div className="mt-3">© {new Date().getFullYear()} Nomad Bikers Club. All rights reserved.</div>
       </div>
     </footer>
   );
