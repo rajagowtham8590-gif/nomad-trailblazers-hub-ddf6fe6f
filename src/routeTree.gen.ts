@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BookingRouteImport } from './routes/booking'
@@ -22,9 +24,19 @@ const TestimonialsRoute = TestimonialsRouteImport.update({
   path: '/testimonials',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -59,7 +71,9 @@ export interface FileRoutesByFullPath {
   '/booking': typeof BookingRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/services': typeof ServicesRoute
+  '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
 }
 export interface FileRoutesByTo {
@@ -68,7 +82,9 @@ export interface FileRoutesByTo {
   '/booking': typeof BookingRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/services': typeof ServicesRoute
+  '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
 }
 export interface FileRoutesById {
@@ -78,7 +94,9 @@ export interface FileRoutesById {
   '/booking': typeof BookingRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/services': typeof ServicesRoute
+  '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
 }
 export interface FileRouteTypes {
@@ -89,7 +107,9 @@ export interface FileRouteTypes {
     | '/booking'
     | '/careers'
     | '/contact'
+    | '/refund-policy'
     | '/services'
+    | '/terms'
     | '/testimonials'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -98,7 +118,9 @@ export interface FileRouteTypes {
     | '/booking'
     | '/careers'
     | '/contact'
+    | '/refund-policy'
     | '/services'
+    | '/terms'
     | '/testimonials'
   id:
     | '__root__'
@@ -107,7 +129,9 @@ export interface FileRouteTypes {
     | '/booking'
     | '/careers'
     | '/contact'
+    | '/refund-policy'
     | '/services'
+    | '/terms'
     | '/testimonials'
   fileRoutesById: FileRoutesById
 }
@@ -117,7 +141,9 @@ export interface RootRouteChildren {
   BookingRoute: typeof BookingRoute
   CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
   ServicesRoute: typeof ServicesRoute
+  TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
 }
 
@@ -130,11 +156,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestimonialsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -181,7 +221,9 @@ const rootRouteChildren: RootRouteChildren = {
   BookingRoute: BookingRoute,
   CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
   ServicesRoute: ServicesRoute,
+  TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
 }
 export const routeTree = rootRouteImport
