@@ -19,9 +19,9 @@ export const Route = createFileRoute("/contact")({
 });
 
 const schema = z.object({
-  name: z.string().trim().min(2).max(80),
-  email: z.string().trim().email().max(160),
-  message: z.string().trim().min(10).max(1000),
+  name: z.string().trim().min(2, "Enter your name").max(80),
+  email: z.string().trim().email("Enter a valid email").max(160),
+  message: z.string().trim().min(10, "Enter a message of at least 10 characters").max(1000),
 });
 
 const inputCls = "w-full px-4 py-3.5 rounded-xl bg-secondary/60 border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition";
@@ -131,7 +131,7 @@ function Contact() {
               <textarea name="message" rows={5} className={inputCls} />
               {errs.message && <p className="text-xs text-destructive mt-1">{errs.message}</p>}
             </label>
-            <button className="w-full inline-flex justify-center items-center gap-2 px-6 py-4 rounded-full bg-ember-gradient text-primary-foreground font-semibold shadow-glow hover:scale-[1.02] transition">
+            <button disabled={sending} className="w-full inline-flex justify-center items-center gap-2 px-6 py-4 rounded-full bg-ember-gradient text-primary-foreground font-semibold shadow-glow hover:scale-[1.02] transition disabled:opacity-60">
               {sending ? "Sending..." : sent ? "Thank you! We'll get back to you shortly." : <>Send message <Send className="h-4 w-4" /></>}
             </button>
             {submitError && <p role="alert" className="text-sm text-destructive">{submitError}</p>}

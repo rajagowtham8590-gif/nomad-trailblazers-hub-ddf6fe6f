@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
 import type { Database } from "@/integrations/supabase/types";
+import { sendFormNotification } from "./email.server";
 
 const phoneSchema = z.string().trim().regex(/^[+\d\s().-]{8,20}$/, "Enter a valid phone number");
 const emailSchema = z.string().trim().email("Enter a valid email").max(160);
@@ -38,7 +39,7 @@ const submissionSchema = z.object({
 });
 
 export const submitForm = createServerFn({ method: "POST" })
-  .inputValidator((input) => submissionSchema.parse(input))
+  .validator((input) => submissionSchema.parse(input))
   .handler(async ({ data }) => {
     if (data.website?.trim()) return { ok: true, spam: true };
 
@@ -58,8 +59,8 @@ export const submitForm = createServerFn({ method: "POST" })
       };
     }
 
-    const url = process.env["SUPABASE_URL"];
-    const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
+    const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
+    const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
     if (!url || !key) throw new Error("Form submission is temporarily unavailable.");
 
     const supabase = createClient<Database>(url, key, {
@@ -82,5 +83,18 @@ export const submitForm = createServerFn({ method: "POST" })
     });
 
     if (error) throw new Error("We couldn't save your submission. Please try again.");
+
+    // Send email notification to support@nomadbikersclub.in
+    try {
+      await sendFormNotification({
+        formType: data.formType,
+        payload: validation.data,
+      });
+    } catch (emailError) {
+      console.error("[Form Submissions] Failed to send email notification:", emailError);
+      // We don't abort the user's successfully saved submission if SMTP is temporarily down,
+      // but if SMTP is strictly required, the log records the incident.
+    }
+
     return { ok: true, spam: false };
   });

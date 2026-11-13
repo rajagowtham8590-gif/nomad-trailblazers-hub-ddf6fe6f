@@ -27,7 +27,7 @@ const services = [
 
 const schema = z.object({
   name: z.string().trim().min(2, "Enter your name").max(80),
-  phone: z.string().trim().regex(/^[+\d\s-]{8,15}$/, "Enter a valid phone"),
+  phone: z.string().trim().regex(/^[+\d\s().-]{8,20}$/, "Enter a valid phone number"),
   email: z.string().trim().email("Enter a valid email").max(160),
   city: z.string().trim().min(2, "Enter your city").max(80),
   service: z.string().min(1, "Select a service"),
