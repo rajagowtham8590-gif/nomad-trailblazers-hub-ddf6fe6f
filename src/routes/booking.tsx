@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { CheckCircle2, Send } from "lucide-react";
+import { submitForm } from "@/lib/form-submissions.functions";
 
 export const Route = createFileRoute("/booking")({
   head: () => ({
@@ -48,12 +50,15 @@ function Booking() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const submitBooking = useServerFn(submitForm);
   const [serviceId, setServiceId] = useState<string>(services[0].id);
   const current = services.find(s => s.id === serviceId) ?? services[0];
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const data = Object.fromEntries(fd.entries());
     const r = schema.safeParse(data);
     if (!r.success) {
@@ -63,8 +68,27 @@ function Booking() {
       return;
     }
     setErrors({});
+    setSubmitError("");
     setLoading(true);
-    setTimeout(() => { setLoading(false); setDone(true); (e.target as HTMLFormElement).reset(); }, 900);
+    try {
+      const result = await submitBooking({
+        data: {
+          formType: "booking",
+          payload: r.data,
+          website: String(fd.get("website") ?? ""),
+        },
+      });
+      if (!result.ok) {
+        setErrors(Object.fromEntries(result.errors.map(({ field, message }) => [field, message])));
+        return;
+      }
+      setDone(true);
+      form.reset();
+    } catch {
+      setSubmitError("We couldn't submit your booking. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -78,6 +102,7 @@ function Booking() {
 
         <motion.form onSubmit={onSubmit} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
           className="glass rounded-3xl p-6 md:p-10 shadow-elevated space-y-5">
+          <label className="sr-only" aria-hidden="true">Leave this field empty<input name="website" tabIndex={-1} autoComplete="off" /></label>
           <Field label="Choose a program" error={errors.service}>
             <select name="service" value={serviceId} onChange={e => setServiceId(e.target.value)} className={inputCls}>
               {services.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}
@@ -105,6 +130,7 @@ function Booking() {
           <button disabled={loading} className="w-full inline-flex justify-center items-center gap-2 px-6 py-4 rounded-full bg-ember-gradient text-primary-foreground font-semibold shadow-glow hover:scale-[1.02] transition disabled:opacity-60">
             {loading ? "Sending..." : <>Submit booking <Send className="h-4 w-4" /></>}
           </button>
+          {submitError && <p role="alert" className="text-sm text-destructive">{submitError}</p>}
         </motion.form>
       </div>
 
@@ -118,7 +144,7 @@ function Booking() {
                 <CheckCircle2 className="h-8 w-8 text-primary-foreground" />
               </div>
               <h3 className="font-display text-3xl font-bold">You're in!</h3>
-              <p className="mt-3 text-muted-foreground">We've received your booking. Our team will reach out within 24 hours.</p>
+              <p className="mt-3 text-muted-foreground">Thank you! We'll get back to you shortly.</p>
               <button onClick={() => setDone(false)} className="mt-6 px-6 py-3 rounded-full glass font-semibold">Close</button>
             </motion.div>
           </motion.div>

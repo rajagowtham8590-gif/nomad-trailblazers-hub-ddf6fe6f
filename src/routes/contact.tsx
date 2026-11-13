@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Instagram, Send } from "lucide-react";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { submitForm } from "@/lib/form-submissions.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -27,18 +29,44 @@ const inputCls = "w-full px-4 py-3.5 rounded-xl bg-secondary/60 border border-bo
 function Contact() {
   const [errs, setErrs] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const submitContact = useServerFn(submitForm);
 
-  function submit(e: React.FormEvent<HTMLFormElement>) {
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const data = Object.fromEntries(fd.entries());
     const r = schema.safeParse(data);
     if (!r.success) {
       const o: Record<string, string> = {};
       r.error.issues.forEach(i => o[i.path[0] as string] = i.message);
       setErrs(o); return;
     }
-    setErrs({}); setSent(true); (e.target as HTMLFormElement).reset();
-    setTimeout(() => setSent(false), 4000);
+    setErrs({});
+    setSubmitError("");
+    setSending(true);
+    try {
+      const result = await submitContact({
+        data: {
+          formType: "contact",
+          payload: r.data,
+          website: String(fd.get("website") ?? ""),
+        },
+      });
+      if (!result.ok) {
+        setErrs(Object.fromEntries(result.errors.map(({ field, message }) => [field, message])));
+        return;
+      }
+      setSent(true);
+      form.reset();
+      setTimeout(() => setSent(false), 4000);
+    } catch {
+      setSubmitError("We couldn't send your message. Please try again.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -87,6 +115,7 @@ function Contact() {
           <motion.form onSubmit={submit} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="glass rounded-3xl p-6 md:p-8 shadow-elevated space-y-5">
             <h3 className="font-display text-2xl font-bold">Send a message</h3>
+            <label className="sr-only" aria-hidden="true">Leave this field empty<input name="website" tabIndex={-1} autoComplete="off" /></label>
             <label className="block">
               <div className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Name</div>
               <input name="name" className={inputCls} />
@@ -103,8 +132,9 @@ function Contact() {
               {errs.message && <p className="text-xs text-destructive mt-1">{errs.message}</p>}
             </label>
             <button className="w-full inline-flex justify-center items-center gap-2 px-6 py-4 rounded-full bg-ember-gradient text-primary-foreground font-semibold shadow-glow hover:scale-[1.02] transition">
-              {sent ? "Message sent ✓" : <>Send message <Send className="h-4 w-4" /></>}
+              {sending ? "Sending..." : sent ? "Thank you! We'll get back to you shortly." : <>Send message <Send className="h-4 w-4" /></>}
             </button>
+            {submitError && <p role="alert" className="text-sm text-destructive">{submitError}</p>}
           </motion.form>
         </div>
       </section>

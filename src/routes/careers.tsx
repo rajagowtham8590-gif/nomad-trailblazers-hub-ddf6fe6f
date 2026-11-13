@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { CheckCircle2, Send, Heart, Users, Compass } from "lucide-react";
+import { submitForm } from "@/lib/form-submissions.functions";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -41,10 +43,13 @@ function Careers() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const submitCareer = useServerFn(submitForm);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const data = Object.fromEntries(fd.entries());
     const r = schema.safeParse(data);
     if (!r.success) {
@@ -54,8 +59,27 @@ function Careers() {
       return;
     }
     setErrors({});
+    setSubmitError("");
     setLoading(true);
-    setTimeout(() => { setLoading(false); setDone(true); (e.target as HTMLFormElement).reset(); }, 900);
+    try {
+      const result = await submitCareer({
+        data: {
+          formType: "career_application",
+          payload: r.data,
+          website: String(fd.get("website") ?? ""),
+        },
+      });
+      if (!result.ok) {
+        setErrors(Object.fromEntries(result.errors.map(({ field, message }) => [field, message])));
+        return;
+      }
+      setDone(true);
+      form.reset();
+    } catch {
+      setSubmitError("We couldn't submit your application. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -92,6 +116,7 @@ function Careers() {
           <motion.form onSubmit={onSubmit} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
             className="glass rounded-3xl p-6 md:p-10 shadow-elevated space-y-5">
             <h3 className="font-display text-2xl font-bold">Apply to become a trainer</h3>
+            <label className="sr-only" aria-hidden="true">Leave this field empty<input name="website" tabIndex={-1} autoComplete="off" /></label>
             <div className="grid md:grid-cols-2 gap-5">
               <Field label="Full name" error={errors.name}><input name="name" className={inputCls} placeholder="Your name" /></Field>
               <Field label="Mobile number" error={errors.phone}><input name="phone" className={inputCls} placeholder="+91 9XXXXXXXXX" /></Field>
@@ -107,6 +132,7 @@ function Careers() {
             <button disabled={loading} className="w-full inline-flex justify-center items-center gap-2 px-6 py-4 rounded-full bg-ember-gradient text-primary-foreground font-semibold shadow-glow hover:scale-[1.02] transition disabled:opacity-60">
               {loading ? "Sending..." : <>Submit application <Send className="h-4 w-4" /></>}
             </button>
+            {submitError && <p role="alert" className="text-sm text-destructive">{submitError}</p>}
           </motion.form>
         </div>
 
@@ -120,7 +146,7 @@ function Careers() {
                   <CheckCircle2 className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <h3 className="font-display text-3xl font-bold">Application received</h3>
-                <p className="mt-3 text-muted-foreground">Thanks for applying. Our team will reach out within 5 working days.</p>
+                <p className="mt-3 text-muted-foreground">Thank you! We'll get back to you shortly.</p>
                 <button onClick={() => setDone(false)} className="mt-6 px-6 py-3 rounded-full glass font-semibold">Close</button>
               </motion.div>
             </motion.div>
