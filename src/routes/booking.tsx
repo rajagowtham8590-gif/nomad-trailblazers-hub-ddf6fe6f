@@ -84,8 +84,9 @@ function Booking() {
       }
       setDone(true);
       form.reset();
-    } catch {
-      setSubmitError("We couldn't submit your booking. Please try again.");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "We couldn't submit your booking. Please try again.";
+      setSubmitError(msg);
     } finally {
       setLoading(false);
     }

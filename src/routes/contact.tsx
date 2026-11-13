@@ -62,8 +62,9 @@ function Contact() {
       setSent(true);
       form.reset();
       setTimeout(() => setSent(false), 4000);
-    } catch {
-      setSubmitError("We couldn't send your message. Please try again.");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "We couldn't send your message. Please try again.";
+      setSubmitError(msg);
     } finally {
       setSending(false);
     }

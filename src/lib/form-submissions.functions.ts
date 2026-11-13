@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import type { Database } from "@/integrations/supabase/types";
 import { sendFormNotification } from "./email.server";
+import { getEnv } from "./env.server";
 
 const phoneSchema = z.string().trim().regex(/^[+\d\s().-]{8,20}$/, "Enter a valid phone number");
 const emailSchema = z.string().trim().email("Enter a valid email").max(160);
@@ -59,8 +60,14 @@ export const submitForm = createServerFn({ method: "POST" })
       };
     }
 
-    const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
-    const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
+    const url = getEnv(
+      "SUPABASE_URL",
+      "https://c--fd513ce2-a33c-42d7-b96b-e3c670b402ff-prod.lovable.cloud"
+    );
+    const key = getEnv(
+      "SUPABASE_PUBLISHABLE_KEY",
+      "sb_publishable_DK9GBivH5TbaNvr-nTeJXg_dhNE01L5"
+    );
     if (!url || !key) throw new Error("Form submission is temporarily unavailable.");
 
     const supabase = createClient<Database>(url, key, {
@@ -82,7 +89,10 @@ export const submitForm = createServerFn({ method: "POST" })
       payload: validation.data,
     });
 
-    if (error) throw new Error("We couldn't save your submission. Please try again.");
+    if (error) {
+      console.error("[Supabase Error]", error);
+      throw new Error(error.message || "We couldn't save your submission. Please try again.");
+    }
 
     // Send email notification to support@nomadbikersclub.in
     try {
