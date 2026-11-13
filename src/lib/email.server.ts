@@ -83,7 +83,7 @@ export async function sendFormNotification({ formType, payload }: SendFormNotifi
   messageId?: string;
   skippedReason?: string;
 }> {
-  const supportEmail = getEnv("SUPPORT_EMAIL", "rajagowtham8590@gmail.com").trim();
+  const supportEmail = getEnv("SUPPORT_EMAIL", "support@nomadbikersclub.in").trim();
   const subject = FORM_TITLES[formType] || `New Form Submission (${formType}) - Nomad Bikers Club Website`;
 
   // Find customer's email for Reply-To
