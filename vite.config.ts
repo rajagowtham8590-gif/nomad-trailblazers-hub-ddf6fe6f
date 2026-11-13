@@ -6,10 +6,42 @@
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+const isVercel = Boolean(process.env.VERCEL) || process.env.NITRO_PRESET === "vercel";
+
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
 export default defineConfig({
+  ...(isVercel ? { nitro: { preset: "vercel" } } : {}),
   tanstackStart: {
     server: { entry: "server" },
+  },
+  vite: {
+    plugins: [
+      {
+        name: "fix-vite7-rollup-input",
+        config() {
+          return {
+            build: {
+              rollupOptions: {
+                input: {
+                  index: "virtual:tanstack-start-client-entry",
+                },
+              },
+            },
+            environments: {
+              client: {
+                build: {
+                  rollupOptions: {
+                    input: {
+                      index: "virtual:tanstack-start-client-entry",
+                    },
+                  },
+                },
+              },
+            },
+          };
+        },
+      },
+    ],
   },
 });
