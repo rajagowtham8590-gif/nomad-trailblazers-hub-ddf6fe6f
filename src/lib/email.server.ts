@@ -1,4 +1,46 @@
 import nodemailer from "nodemailer";
+import fs from "node:fs";
+import path from "node:path";
+
+function readEnvFile(): Record<string, string> {
+  const result: Record<string, string> = {};
+  try {
+    const envPath = path.resolve(process.cwd(), ".env");
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, "utf-8");
+      for (const line of content.split(/\r?\n/)) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith("#")) continue;
+        const eqIdx = trimmed.indexOf("=");
+        if (eqIdx !== -1) {
+          const key = trimmed.slice(0, eqIdx).trim();
+          let val = trimmed.slice(eqIdx + 1).trim();
+          if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+            val = val.slice(1, -1);
+          }
+          result[key] = val;
+        }
+      }
+    }
+  } catch {
+    // Ignore file read error
+  }
+  return result;
+}
+
+function getEnvVar(key: string): string | undefined {
+  if (process.env[key] !== undefined && process.env[key] !== "") {
+    return process.env[key];
+  }
+  const fileEnv = readEnvFile();
+  if (fileEnv[key] !== undefined && fileEnv[key] !== "") {
+    return fileEnv[key];
+  }
+  if (fileEnv[`VITE_${key}`] !== undefined && fileEnv[`VITE_${key}`] !== "") {
+    return fileEnv[`VITE_${key}`];
+  }
+  return undefined;
+}
 
 export interface SendFormNotificationParams {
   formType: "contact" | "booking" | "career_application";
@@ -48,11 +90,11 @@ function formatFieldValue(key: string, value: unknown): string {
  * Creates a reusable nodemailer transporter from environment variables.
  */
 function createTransporter() {
-  const host = process.env.SMTP_HOST?.trim();
-  const port = parseInt(process.env.SMTP_PORT || "587", 10);
-  const user = process.env.SMTP_USER?.trim();
-  const pass = process.env.SMTP_PASS?.trim();
-  const secure = process.env.SMTP_SECURE === "true" || port === 465;
+  const host = getEnvVar("SMTP_HOST")?.trim();
+  const port = parseInt(getEnvVar("SMTP_PORT") || "587", 10);
+  const user = getEnvVar("SMTP_USER")?.trim();
+  const pass = getEnvVar("SMTP_PASS")?.trim();
+  const secure = getEnvVar("SMTP_SECURE") === "true" || port === 465;
 
   if (!host || !user || !pass) {
     return null;
@@ -74,7 +116,7 @@ export async function sendFormNotification({ formType, payload }: SendFormNotifi
   messageId?: string;
   skippedReason?: string;
 }> {
-  const supportEmail = process.env.SUPPORT_EMAIL?.trim() || "rajagowtham8590@gmail.com";
+  const supportEmail = getEnvVar("SUPPORT_EMAIL")?.trim() || "rajagowtham8590@gmail.com";
   const subject = FORM_TITLES[formType] || `New Form Submission (${formType}) - Nomad Bikers Club Website`;
 
   // Find customer's email for Reply-To
@@ -174,7 +216,7 @@ export async function sendFormNotification({ formType, payload }: SendFormNotifi
     };
   }
 
-  const from = process.env.SMTP_FROM?.trim() || `"Nomad Bikers Club" <${process.env.SMTP_USER?.trim()}>`;
+  const from = getEnvVar("SMTP_FROM")?.trim() || `"Nomad Bikers Club" <${getEnvVar("SMTP_USER")?.trim()}>`;
 
   try {
     const info = await transporter.sendMail({
