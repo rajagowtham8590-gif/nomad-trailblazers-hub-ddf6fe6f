@@ -1,10 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-let cachedFileEnv: Record<string, string> | null = null;
-
 function readEnvFile(): Record<string, string> {
-  if (cachedFileEnv !== null) return cachedFileEnv;
   const result: Record<string, string> = {};
   try {
     const envPath = path.resolve(process.cwd(), ".env");
@@ -27,16 +24,27 @@ function readEnvFile(): Record<string, string> {
   } catch {
     // Ignore read errors in sandboxed or serverless environments
   }
-  cachedFileEnv = result;
   return result;
 }
 
 /**
- * Universal environment variable reader for server-side code:
- * Checks process.env, VITE_ prefixed process.env, local .env file,
- * and falls back to an optional default value.
+ * Universal environment variable reader:
+ * 1. Checks local .env file (takes precedence in local dev so changes are immediate)
+ * 2. Checks process.env & VITE_ prefixed env (used on Vercel / serverless runtimes)
+ * 3. Falls back to default value
  */
 export function getEnv(key: string, defaultValue = ""): string {
+  // 1. Local .env file
+  const fileEnv = readEnvFile();
+  if (fileEnv[key] !== undefined && fileEnv[key] !== "") {
+    return fileEnv[key];
+  }
+  const viteFileKey = `VITE_${key}`;
+  if (fileEnv[viteFileKey] !== undefined && fileEnv[viteFileKey] !== "") {
+    return fileEnv[viteFileKey];
+  }
+
+  // 2. System / Vercel process.env
   if (typeof process !== "undefined" && process.env) {
     if (process.env[key] !== undefined && process.env[key] !== "") {
       return process.env[key]!;
@@ -45,15 +53,6 @@ export function getEnv(key: string, defaultValue = ""): string {
     if (process.env[viteKey] !== undefined && process.env[viteKey] !== "") {
       return process.env[viteKey]!;
     }
-  }
-
-  const fileEnv = readEnvFile();
-  if (fileEnv[key] !== undefined && fileEnv[key] !== "") {
-    return fileEnv[key];
-  }
-  const viteFileKey = `VITE_${key}`;
-  if (fileEnv[viteFileKey] !== undefined && fileEnv[viteFileKey] !== "") {
-    return fileEnv[viteFileKey];
   }
 
   return defaultValue;
