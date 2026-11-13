@@ -16,6 +16,18 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
+    define: {
+      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(
+        process.env.VITE_SUPABASE_URL ||
+          process.env.SUPABASE_URL ||
+          "https://c--fd513ce2-a33c-42d7-b96b-e3c670b402ff-prod.lovable.cloud"
+      ),
+      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(
+        process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+          process.env.SUPABASE_PUBLISHABLE_KEY ||
+          "sb_publishable_DK9GBivH5TbaNvr-nTeJXg_dhNE01L5"
+      ),
+    },
     plugins: [
       {
         name: "fix-vite7-rollup-input",
