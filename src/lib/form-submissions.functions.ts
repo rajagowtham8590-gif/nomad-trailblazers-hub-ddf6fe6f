@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
 import type { Database } from "@/integrations/supabase/types";
-import { sendFormNotification } from "./email.server";
+import { executePhpMailer } from "./php-mailer.server";
 
 const phoneSchema = z.string().trim().regex(/^[+\d\s().-]{8,20}$/, "Enter a valid phone number");
 const emailSchema = z.string().trim().email("Enter a valid email").max(160);
@@ -84,16 +84,15 @@ export const submitForm = createServerFn({ method: "POST" })
 
     if (error) throw new Error("We couldn't save your submission. Please try again.");
 
-    // Send email notification to support@nomadbikersclub.in
+    // Execute PHP form submission & email handler
     try {
-      await sendFormNotification({
+      await executePhpMailer({
         formType: data.formType,
         payload: validation.data,
+        website: data.website,
       });
-    } catch (emailError) {
-      console.error("[Form Submissions] Failed to send email notification:", emailError);
-      // We don't abort the user's successfully saved submission if SMTP is temporarily down,
-      // but if SMTP is strictly required, the log records the incident.
+    } catch (phpError) {
+      console.warn("[Form Submissions] PHP mailer execution error:", phpError);
     }
 
     return { ok: true, spam: false };
